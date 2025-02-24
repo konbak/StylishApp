@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="signin_title">Welcome Back!</string>
+    <string name="username_text">Username</string>
+    <string name="password_text">Password</string>
+</resources>
