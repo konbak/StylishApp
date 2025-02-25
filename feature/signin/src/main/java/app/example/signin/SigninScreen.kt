@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import app.example.designssystem.components.CustomButton
 import app.example.designssystem.components.InputField
 import app.example.designssystem.components.TextField
 import app.example.designssystem.theme.StylishAppTheme
@@ -39,7 +40,8 @@ fun SigninScreen(
         content = { paddingValues ->
             SigninStatelessScreen(
                 modifier = Modifier.padding(paddingValues),
-                onSignInClick = {},
+                onSignInClick = {
+                },
             )
         }
     )
@@ -99,6 +101,14 @@ internal fun SigninStatelessScreen(
             modifier = Modifier.focusRequester(focusRequesterPassword),
             visualTransformation = PasswordVisualTransformation(),
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        CustomButton(
+            text = stringResource(R.string.signin_button),
+        ) {
+            onSignInClick()
+        }
     }
 }
 
