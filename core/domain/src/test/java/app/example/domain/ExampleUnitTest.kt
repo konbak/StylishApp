@@ -1,4 +1,4 @@
-package app.example.model
+package app.example.domain
 
 import org.junit.Test
 
