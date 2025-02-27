@@ -7,7 +7,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,17 +35,44 @@ import app.example.designssystem.components.CustomButton
 import app.example.designssystem.components.InputField
 import app.example.designssystem.components.TextField
 import app.example.designssystem.theme.StylishAppTheme
+import app.example.domain.navigation.StylishappScreens
 
 @Composable
 fun SigninScreen(
     navController: NavController,
     viewModel: SigninViewModel = hiltViewModel(),
 ) {
+    val snackBarHostState = remember { SnackbarHostState() }
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(uiState.isSignedIn) {
+        if (uiState.isSignedIn) {
+            navController.navigate(StylishappScreens.HomeScreen.name) {
+                popUpTo(StylishappScreens.SigninScreen.name) { inclusive = true }
+            }
+        }
+    }
+
+    LaunchedEffect(uiState.errorMessage) {
+        uiState.errorMessage?.let {
+            snackBarHostState.showSnackbar(
+                message = it,
+                duration = SnackbarDuration.Short,
+            )
+        }
+    }
+
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackBarHostState)
+        },
         content = { paddingValues ->
             SigninStatelessScreen(
                 modifier = Modifier.padding(paddingValues),
-                onSignInClick = {
+                uiState = uiState,
+                onSignInClick = { username, password ->
+                    viewModel.updateCredentials(username, password)
+                    viewModel.signIn()
                 },
             )
         }
@@ -50,7 +82,8 @@ fun SigninScreen(
 @Composable
 internal fun SigninStatelessScreen(
     modifier: Modifier = Modifier,
-    onSignInClick: () -> Unit,
+    uiState: SignInUiState,
+    onSignInClick: (username: String, password: String) -> Unit,
 ) {
     Column(
         modifier = modifier,
@@ -106,8 +139,13 @@ internal fun SigninStatelessScreen(
 
         CustomButton(
             text = stringResource(R.string.signin_button),
+            enabled = !uiState.isLoading,
         ) {
-            onSignInClick()
+            keyboardController?.hide()
+            onSignInClick(
+                userNameTextValue.text,
+                passwordTextValue.text,
+            )
         }
     }
 }
@@ -118,7 +156,8 @@ private fun SignInScreenPreview() {
     StylishAppTheme {
         SigninStatelessScreen(
             modifier = Modifier.fillMaxSize(),
-            onSignInClick = {},
+            uiState = SignInUiState(),
+            onSignInClick = { _, _ -> },
         )
     }
 }

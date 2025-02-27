@@ -59,4 +59,5 @@ dependencies {
 
     //modules
     implementation(project(":core:designssystem"))
+    implementation(project(":core:domain"))
 }
