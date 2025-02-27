@@ -48,6 +48,9 @@ dependencies {
     ksp(libs.hilt.android.compiler)
     implementation (libs.androidx.hilt.navigation.compose)
 
+    //data store
+    implementation (libs.androidx.datastore.preferences)
+
     //modules
     implementation(project(":core:domain"))
     implementation(project(":core:network"))
