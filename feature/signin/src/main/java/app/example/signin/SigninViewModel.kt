@@ -3,6 +3,7 @@ package app.example.signin
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.example.domain.repository.LoginResult
+import app.example.domain.repository.TokenRepository
 import app.example.domain.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SigninViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val tokenRepository: TokenRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(SignInUiState())
     val uiState: StateFlow<SignInUiState> = _uiState
@@ -37,6 +39,7 @@ class SigninViewModel @Inject constructor(
 
         when (result) {
             is LoginResult.Success -> {
+                tokenRepository.saveToken(result.data.token)
                 updateUiSignedInState()
             }
 
