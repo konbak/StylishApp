@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import app.example.domain.navigation.StylishappScreens
 import app.example.home.HomeScreen
+import app.example.home.HomeViewModel
 import app.example.signin.SigninScreen
 import app.example.signin.SigninViewModel
 import app.example.splash.SplashScreen
@@ -25,7 +26,8 @@ fun StylishappNavigation() {
         }
 
         composable(StylishappScreens.HomeScreen.name) {
-            HomeScreen()
+            val homeViewModel = hiltViewModel<HomeViewModel>()
+            HomeScreen(navController = navController, viewModel = homeViewModel)
         }
 
         composable(StylishappScreens.SplashScreen.name) {

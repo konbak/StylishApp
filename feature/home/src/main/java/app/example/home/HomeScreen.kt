@@ -10,9 +10,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavController,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -24,10 +29,4 @@ fun HomeScreen() {
             color = Color.Black
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewHomeScreen() {
-    HomeScreen()
 }
