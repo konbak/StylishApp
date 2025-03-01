@@ -1,6 +1,7 @@
 package app.example.network.di
 
 import app.example.network.service.AuthService
+import app.example.network.service.ProductsService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,5 +37,11 @@ object NetworkModule {
     @Singleton
     fun provideAuthService(retrofit: Retrofit): AuthService {
         return retrofit.create(AuthService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductService(retrofit: Retrofit): ProductsService {
+        return retrofit.create(ProductsService::class.java)
     }
 }
