@@ -1,6 +1,8 @@
 package app.example.domain.di
 
 import app.example.domain.repository.AuthRepository
+import app.example.domain.repository.ProductsRepository
+import app.example.domain.usecase.FetchProductsUseCase
 import app.example.domain.usecase.LoginUseCase
 import dagger.Module
 import dagger.Provides
@@ -18,5 +20,13 @@ object UseCaseModule {
         authRepository: AuthRepository
     ): LoginUseCase {
         return LoginUseCase(authRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFetchProductsUseCase(
+        productsRepository: ProductsRepository
+    ): FetchProductsUseCase {
+        return FetchProductsUseCase(productsRepository)
     }
 }
