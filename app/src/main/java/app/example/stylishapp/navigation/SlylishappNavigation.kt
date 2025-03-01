@@ -9,13 +9,15 @@ import app.example.domain.navigation.StylishappScreens
 import app.example.home.HomeScreen
 import app.example.signin.SigninScreen
 import app.example.signin.SigninViewModel
+import app.example.splash.SplashScreen
+import app.example.splash.SplashScreenViewModel
 
 @Composable
 fun StylishappNavigation() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = StylishappScreens.SigninScreen.name
+        startDestination = StylishappScreens.SplashScreen.name
     ) {
         composable(StylishappScreens.SigninScreen.name) {
             val signinViewModel = hiltViewModel<SigninViewModel>()
@@ -24,6 +26,11 @@ fun StylishappNavigation() {
 
         composable(StylishappScreens.HomeScreen.name) {
             HomeScreen()
+        }
+
+        composable(StylishappScreens.SplashScreen.name) {
+            val splashScreenViewModel = hiltViewModel<SplashScreenViewModel>()
+            SplashScreen(navController = navController, viewModel = splashScreenViewModel)
         }
     }
 }
