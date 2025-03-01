@@ -2,7 +2,8 @@ package app.example.signin
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.example.domain.repository.LoginResult
+import app.example.domain.model.LoginData
+import app.example.domain.repository.Result
 import app.example.domain.repository.TokenRepository
 import app.example.domain.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,18 +33,18 @@ class SigninViewModel @Inject constructor(
     fun signIn() = viewModelScope.launch {
         updateUiLoadingState(isLoading = true)
 
-        val result = loginUseCase(
+        val result: Result<LoginData> = loginUseCase(
             _uiState.value.username,
             _uiState.value.password,
         )
 
         when (result) {
-            is LoginResult.Success -> {
+            is Result.Success -> {
                 tokenRepository.saveToken(result.data.token)
                 updateUiSignedInState()
             }
 
-            is LoginResult.Error -> {
+            is Result.Error -> {
                 updateUiLoadingState(
                     isLoading = false,
                     errorMessage = result.message,
