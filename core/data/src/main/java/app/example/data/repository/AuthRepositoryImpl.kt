@@ -9,7 +9,8 @@ import app.example.network.service.AuthService
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val authService: AuthService
+    private val authService: AuthService,
+    private val loginResponseMapper: LoginResponseMapper,
 ) : AuthRepository {
 
     override suspend fun login(username: String, password: String): Result<LoginData> {
@@ -17,7 +18,7 @@ class AuthRepositoryImpl @Inject constructor(
 
         return try {
             val response = authService.login(loginRequest)
-            val loginData = LoginResponseMapper().mapToDomain(response)
+            val loginData = loginResponseMapper.mapToDomain(response)
             Result.Success(loginData)
         } catch (e: Exception) {
             Result.Error("Login failed: ${e.message}")
