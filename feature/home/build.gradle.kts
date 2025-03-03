@@ -44,9 +44,13 @@ dependencies {
     implementation(libs.androidx.ui.graphics.android)
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.activity.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //coil
+    implementation(libs.coil.compose)
 
     //dagger-hilt
     implementation(libs.hilt.android)
