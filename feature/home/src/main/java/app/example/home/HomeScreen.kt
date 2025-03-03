@@ -13,6 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import app.example.domain.model.ProductDomain
+import java.text.NumberFormat
+import java.util.Currency
+import java.util.Locale
 
 @Composable
 fun HomeScreen(
@@ -48,8 +51,22 @@ internal fun HomeStateLessScreen(
                 imageUrl = product.image,
                 title = product.title,
                 description = product.description,
-                price = product.price.toString(),
+                price = formatPrice(product.price),
             )
         }
+    }
+}
+
+private fun formatPrice(price: Double): String {
+    val locale = Locale.getDefault()
+    val currencyFormat = NumberFormat.getCurrencyInstance(locale)
+
+    currencyFormat.currency = Currency.getInstance("EUR")
+
+    return if (price % 1 == 0.0) {
+        val formattedPrice = NumberFormat.getNumberInstance(locale).format(price.toInt())
+        currencyFormat.format(formattedPrice.toDouble()).replace(",00", "").replace(".00", "")
+    } else {
+        currencyFormat.format(price)
     }
 }
