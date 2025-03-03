@@ -34,12 +34,24 @@ android {
     }
 }
 
+project.tasks.withType(Test::class.java).configureEach {
+    jvmArgs = listOf(
+        "-XX:+EnableDynamicAgentLoading",
+        "-Dslf4j.provider=org.slf4j.simple.SimpleServiceProvider",
+        "-Dnet.bytebuddy.experimental=true"
+    )
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
+    testImplementation (libs.mockk.mockk)
+    testImplementation (libs.jetbrains.kotlinx.coroutines.test)
+    testImplementation (libs.androidx.datastore.preferences.core)
+    testImplementation (libs.slf4j.slf4j.simple)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
